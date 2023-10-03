@@ -33,8 +33,12 @@ class DogSerializer(serializers.Serializer):
         instance.color = validated_data.get('color', instance.color)
         instance.favoritefood = validated_data.get('favoritefood', instance.favoritefood)
         instance.favoritetoy = validated_data.get('favoritetoy', instance.favoritetoy)
+        instance.save()
         return instance
 
+    def delete(self, instance):
+        instance.delete()
+        
 class DogViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing dog info. 
@@ -60,17 +64,18 @@ class BreedSerializer(serializers.Serializer):
     trainability = serializers.IntegerField(default=3)
     sheddingamount = serializers.IntegerField(default=3)
     exerciseneeds = serializers.IntegerField(default=3)
-
+    
     def create(self, validated_data):
         return Breed.objects.create(**validated_data)
     
     def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.size = validated_data.get('size', instance.size)
-        instance.friendliness = validated_data.get('friendliness', instance.friendliness)
-        instance.trainability = validated_data.get('trainability', instance.trainability)
-        instance.sheddingamount = validated_data.get('sheddingamount', instance.sheddingamount)
-        instance.exerciseneeds = validated_data.get('exerciseneeds', instance.exerciseneeds)
+        instance.name = validated_data.get('name')
+        instance.size = validated_data.get('size')
+        instance.friendliness = validated_data.get('friendliness')
+        instance.trainability = validated_data.get('trainability')
+        instance.sheddingamount = validated_data.get('sheddingamount')
+        instance.exerciseneeds = validated_data.get('exerciseneeds')
+        instance.save()
         return instance
 
 class BreedViewSet(viewsets.ModelViewSet):
@@ -82,11 +87,17 @@ class BreedViewSet(viewsets.ModelViewSet):
         serializer = BreedSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk):
         queryset = Breed.objects.all()
-        user = get_object_or_404(queryset, pk=pk)
+        user = get_object_or_404(queryset, id=pk)
         serializer = BreedSerializer(user)
         return Response(serializer.data)
+    
+#    def delete(self, request, pk):
+#        queryset = Breed.objects.all()
+#        user = get_object_or_404(queryset, id=pk)
+#        serializer = BreedSerializer(user)
+#        return Response(serializer.data)
     
     serializer_class = BreedSerializer
     queryset = Breed.objects.all()
