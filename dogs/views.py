@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db import models
-from dogs.models import Dog
+from dogs.models import Dog, Breed
 from django.http import HttpResponse
 from rest_framework import serializers
 from rest_framework import viewsets
@@ -41,8 +41,15 @@ class DogViewSet(viewsets.ModelViewSet):
 
 class BreedSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=30)
-    size = serializers.CharField(max_length=15, choices=SIZE_CHOICES)
-    friendliness = serializers.IntegerField(choices=INTEGER_CHOICES)
-    trainability = serializers.IntegerField(choices=INTEGER_CHOICES)
-    sheddingamount = serializers.IntegerField(choices=INTEGER_CHOICES)
-    exerciseneeds = serializers.IntegerField(choices=INTEGER_CHOICES)
+    size = serializers.CharField(max_length=15)
+    friendliness = serializers.IntegerField(default=3)
+    trainability = serializers.IntegerField(default=3)
+    sheddingamount = serializers.IntegerField(default=3)
+    exerciseneeds = serializers.IntegerField(default=3)
+
+class BreedViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing breed info. 
+    """
+    serializer_class = BreedSerializer
+    queryset = Breed.objects.all()

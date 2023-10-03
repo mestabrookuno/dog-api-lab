@@ -23,6 +23,7 @@ from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register(r'dogs', views.DogViewSet)
+router.register(r'breeds', views.BreedViewSet)
 
 urlpatterns = [
     path('dogs/', views.index),
