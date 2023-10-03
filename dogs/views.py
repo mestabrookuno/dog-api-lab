@@ -38,3 +38,11 @@ class DogViewSet(viewsets.ModelViewSet):
     """
     serializer_class = DogSerializer
     queryset = Dog.objects.all()
+
+class BreedSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=30)
+    size = serializers.CharField(max_length=15, choices=SIZE_CHOICES)
+    friendliness = serializers.IntegerField(choices=INTEGER_CHOICES)
+    trainability = serializers.IntegerField(choices=INTEGER_CHOICES)
+    sheddingamount = serializers.IntegerField(choices=INTEGER_CHOICES)
+    exerciseneeds = serializers.IntegerField(choices=INTEGER_CHOICES)
