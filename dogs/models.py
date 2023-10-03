@@ -23,10 +23,13 @@ class Breed(models.Model):
     sheddingamount = models.IntegerField(choices=INTEGER_CHOICES)
     exerciseneeds = models.IntegerField(choices=INTEGER_CHOICES)
 
+    def __str__(self):
+        return '%s' % (self.name)
+
 class Dog(models.Model):
     name = models.CharField(max_length=30)
     age = models.IntegerField(default=0)
-    #breed = models.ForeignKey(Breed, on_delete=models.DO_NOTHING)
+    breed = models.ForeignKey(Breed, on_delete=models.DO_NOTHING, default=0)
     gender = models.CharField(max_length=6)
     color = models.CharField(max_length=14)
     favoritefood = models.CharField(max_length=30)

@@ -14,7 +14,7 @@ def api(request):
 class DogSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=30)
     age = serializers.IntegerField(default=0)
-   # breed = models.ForeignKey(Breed, on_delete=models.DO_NOTHING)
+    breed = serializers.PrimaryKeyRelatedField(queryset=Breed.objects.all())
     gender = serializers.CharField(max_length=6)
     color = serializers.CharField(max_length=14)
     favoritefood = serializers.CharField(max_length=30)
@@ -26,6 +26,7 @@ class DogSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
         instance.age = validated_data.get('age', instance.age)
+        instance.breed = validated_data.get('breed', instance.breed)
         instance.gender = validated_data.get('gender', instance.gender)
         instance.color = validated_data.get('color', instance.color)
         instance.favoritefood = validated_data.get('favoritefood', instance.favoritefood)
