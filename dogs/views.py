@@ -47,6 +47,18 @@ class BreedSerializer(serializers.Serializer):
     sheddingamount = serializers.IntegerField(default=3)
     exerciseneeds = serializers.IntegerField(default=3)
 
+    def create(self, validated_data):
+        return Breed.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.size = validated_data.get('size', instance.size)
+        instance.friendliness = validated_data.get('friendliness', instance.friendliness)
+        instance.trainability = validated_data.get('trainability', instance.trainability)
+        instance.sheddingamount = validated_data.get('sheddingamount', instance.sheddingamount)
+        instance.exerciseneeds = validated_data.get('exerciseneeds', instance.exerciseneeds)
+        return instance
+
 class BreedViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing breed info. 
