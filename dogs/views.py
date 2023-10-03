@@ -4,6 +4,8 @@ from dogs.models import Dog, Breed
 from django.http import HttpResponse
 from rest_framework import serializers
 from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 
 def index(request):
     return HttpResponse("Hello, world!")
@@ -37,6 +39,17 @@ class DogViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing dog info. 
     """
+    def list(self, request):
+        queryset = Dog.objects.all()
+        serializer = DogSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Dog.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+        serializer = DogSerializer(user)
+        return Response(serializer.data)
+
     serializer_class = DogSerializer
     queryset = Dog.objects.all()
 
@@ -64,5 +77,16 @@ class BreedViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing breed info. 
     """
+    def list(self, request):
+        queryset = Breed.objects.all()
+        serializer = BreedSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Breed.objects.all()
+        user = get_object_or_404(queryset, pk=pk)
+        serializer = BreedSerializer(user)
+        return Response(serializer.data)
+    
     serializer_class = BreedSerializer
     queryset = Breed.objects.all()
